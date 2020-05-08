@@ -1,0 +1,5 @@
+pytest
+mypy
+pytest-cov
+coverage
+coveralls

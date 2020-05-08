@@ -1,0 +1,13 @@
+language: python
+python:
+  - "3.8"
+
+install:
+  - pip install -r requirements.txt
+
+script:
+  - mypy mutants tests
+  - pytest --cov-report=xml --cov=mutants
+
+after_success:
+  - coveralls
