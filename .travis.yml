@@ -7,7 +7,7 @@ install:
 
 script:
   - mypy
-  - pytest --cov=mutants --cov-report=xml
+  - pytest --cov=flaskr --cov-report=xml
   - flake8
 
 after_success:

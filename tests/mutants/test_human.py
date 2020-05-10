@@ -1,4 +1,4 @@
-from mutants.human import Human
+from flaskr.mutants.human import Human
 
 
 # Vamos a tratar de estructurar todos los tests de la misma manera, siguiendo el
@@ -10,7 +10,7 @@ from mutants.human import Human
 # eso nos va a dar un indicador de que es tiempo de refactorizar :)
 
 
-def test_it_is_mutant_for_two_sequences_with_four_equal_letters_vertically() -> None:
+def test_it_is_mutant_for_two_sequences_with_four_equal_letters_vertically():
     # Vamos a comentar cada parte del patrón AAA en este test para tener como ejemplo
 
     # Arrange
@@ -23,7 +23,7 @@ def test_it_is_mutant_for_two_sequences_with_four_equal_letters_vertically() -> 
     assert is_mutant
 
 
-def test_it_is_mutant_for_two_sequences_with_four_equal_letters_horizontally() -> None:
+def test_it_is_mutant_for_two_sequences_with_four_equal_letters_horizontally():
     dna = ["AAAAGA", "TTTTGC", "GTGGAG", "ATAAGG", "CACCTA", "TCACTG"]
 
     is_mutant = Human(dna).is_mutant()
@@ -31,7 +31,7 @@ def test_it_is_mutant_for_two_sequences_with_four_equal_letters_horizontally() -
     assert is_mutant
 
 
-def test_it_is_not_mutant_for_dna_with_no_sequences_with_four_equal_letters() -> None:
+def test_it_is_not_mutant_for_dna_with_no_sequences_with_four_equal_letters():
     dna = ["ATAAGA", "TATTGC", "GTGGAG", "ATAAGG", "CACCTA", "TCACTG"]
 
     is_mutant = Human(dna).is_mutant()
@@ -39,7 +39,7 @@ def test_it_is_not_mutant_for_dna_with_no_sequences_with_four_equal_letters() ->
     assert not is_mutant
 
 
-def test_is_mutant_for_two_diagonal_equal_letter_sequences() -> None:
+def test_is_mutant_for_two_diagonal_equal_letter_sequences():
     dna = ["ATAGGA", "AATGAG", "GGATGA", "AAGATA", "CCGGCC", "GGCCAG"]
 
     is_mutant = Human(dna).is_mutant()
@@ -47,7 +47,7 @@ def test_is_mutant_for_two_diagonal_equal_letter_sequences() -> None:
     assert is_mutant
 
 
-def test_is_mutant_for_one_clockwise_and_one_counter_clockwise_diagonal_equal_letter_sequences() -> None:
+def test_is_mutant_for_one_clockwise_and_one_counter_clockwise_diagonal_equal_letter_sequences():
     dna = ["ATAGGT", "AATGTG", "GGTTGA", "AATATA", "CCGGCC", "GGCCAG"]
 
     is_mutant = Human(dna).is_mutant()
