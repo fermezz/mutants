@@ -1,7 +1,7 @@
-from mutants.utils import Matrix
+from flaskr.mutants.utils import Matrix
 
 
-def test_matrix_returns_rows_correctly() -> None:
+def test_matrix_returns_rows_correctly():
     matrix = ["abc", "def", "ghi"]
 
     rows = list(Matrix(matrix).get_rows())
@@ -9,7 +9,7 @@ def test_matrix_returns_rows_correctly() -> None:
     assert matrix == rows
 
 
-def test_matrix_returns_columns_correctly() -> None:
+def test_matrix_returns_columns_correctly():
     matrix = ["abc", "def", "ghi"]
 
     columns = list(Matrix(matrix).get_columns())
@@ -18,7 +18,7 @@ def test_matrix_returns_columns_correctly() -> None:
     assert expected_columns == columns
 
 
-def test_matrix_returns_diagonals_correctly() -> None:
+def test_matrix_returns_diagonals_correctly():
     matrix = ["abc", "def", "ghi"]
 
     diagonals = list(Matrix(matrix).get_all_diagonals())

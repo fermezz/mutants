@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from itertools import chain
 from typing import List
 
-from mutants.utils import Matrix
+from flaskr.mutants.utils import Matrix
 
 
 ADENINE = "A"
@@ -18,9 +18,9 @@ class Human:
 
     def is_mutant(self) -> bool:
         """Returns a boolean telling whether the current human is a mutant or not,
-        based on the quantity of sequences with four equal bases.
+        based on the quantity of sequences with four equal nucleobases.
 
-        If the human has more than one sequence with four equal letters, we say it's a mutant.
+        If the human has more than one sequence with four equal nucleobases, we say it's a mutant.
         """
         four_equal_nucleobases_sequences: int = 0
         dna_matrix = Matrix(self.dna)
@@ -32,7 +32,7 @@ class Human:
         ):
             # Dado que las secuencias de ADN no tienen ningún tipo de orden
             # y no tiene sentido darle un orden, podemos hacer una búsqueda linear
-            # de secuencias con cuatro bases iguales sin sospechar, por ahora,
+            # de secuencias con cuatro nucleobases iguales sin sospechar, por ahora,
             # de que ese tipo de búsqueda va a ser mala en cuanto a la performance
             # a comparación de alguna otra técnica de búsqueda.
 
