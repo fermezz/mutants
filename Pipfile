@@ -1,0 +1,18 @@
+[[source]]
+name = 'pypi'
+url = 'https://pypi.python.org/simple'
+verify_ssl = true
+
+[requires]
+python_version = '3.8'
+
+[packages]
+flask = { version = "~=1.1" }
+
+[dev-packages]
+pytest = "*"
+mypy = "*"
+pytest-cov = "*"
+coverage = "*"
+coveralls = "*"
+flake8 = "*"
