@@ -1,0 +1,16 @@
+FROM python:3.8-slim-buster
+
+RUN pip install -U pipenv
+
+COPY Pipfile Pipfile.lock /app/
+ENV PIPENV_PIPFILE /app/Pipfile
+RUN pipenv install --dev --system --deploy
+
+COPY . /app/
+
+WORKDIR /app/
+
+ENV FLASK_ENV development
+ENV FLASK_APP flaskr
+
+CMD ["flask", "run", "--host=0.0.0.0"]
