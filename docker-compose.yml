@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-  mutants:
+  mutants_api:
     build:
       context: ./
       dockerfile: Dockerfile-dev
