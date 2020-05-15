@@ -8,10 +8,12 @@ python_version = '3.8'
 
 [packages]
 flask = { version = "~=1.1" }
+gunicorn = { version = "~=20.0" }
 
 [dev-packages]
-pytest = "*"
-mypy = "*"
-pytest-cov = "*"
 coverage = "*"
 flake8 = "*"
+ipdb = "*"
+mypy = "*"
+pytest = "*"
+pytest-cov = "*"
