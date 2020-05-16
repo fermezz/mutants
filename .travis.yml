@@ -19,7 +19,7 @@ after_success:
   - coveralls
 
 before_deploy:
-  - pip install --user awscli
+  - pip install awscli
 
 deploy:
   provider: script
