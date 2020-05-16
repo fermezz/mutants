@@ -1,24 +1,29 @@
 [
-    {
-        "name": "nginx",
-        "image": "642559655451.dkr.ecr.sa-east-1.amazonaws.com/nginx:c1e21b6",
-        "memory": 256,
-        "essential": true,
-        "portMappings": [
-            { 
-                "hostPort": 1337,
-                "containerPort": 80,
-                "protocol": "tcp"
-            }
-        ],
-        "links": [
-            "mutants_api"
-        ]
-    },
-    {
-        "name": "mutants_api",
-        "image": "642559655451.dkr.ecr.sa-east-1.amazonaws.com/mutants_api:c1e21b6",
-        "memory": 256,
-        "essential": true
-    }
+  {
+    "name": "nginx",
+    "image": "642559655451.dkr.ecr.sa-east-1.amazonaws.com/nginx:c1e21b6",
+    "memory": 256,
+    "essential": true,
+    "portMappings": [
+      { 
+        "hostPort": 1337,
+        "containerPort": 80,
+        "protocol": "tcp"
+      }
+    ],
+    "links": [
+      "mutants_api"
+    ]
+  },
+  {
+    "name": "mutants_api",
+    "image": "642559655451.dkr.ecr.sa-east-1.amazonaws.com/mutants_api:617fca9",
+    "memory": 256,
+    "essential": true,
+    "executionRoleArn": "arn:aws:iam::642559655451:role/ecsTaskExecutionRole",
+    "secrets": [{
+      "name": "HONEYCOMB_API_KEY",
+      "valueFrom": "arn:aws:secretsmanager:sa-east-1:642559655451:secret:mutants_api/honeycomb-Hzdad5"
+    }]
+  }
 ]

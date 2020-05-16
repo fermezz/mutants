@@ -75,11 +75,11 @@ class Matrix:
             yield from self._get_diagonals(idx, self.get_columns())
 
     def _get_diagonals(self, idx: int, matrix: Generator[str, None, None]) -> Generator[str, None, None]:
-        yield ''.join([x[2] for x in self._rotate_45_degrees(matrix) if x[0] == idx])
+        yield "".join([x[2] for x in self._rotate_45_degrees(matrix) if x[0] == idx])
 
     def _transpose(self) -> Generator[str, None, None]:
         for row in reversed(list(zip(*self.data))):
-            yield ''.join(row)
+            yield "".join(row)
 
     def _get_indexes_with_values(
         self,
