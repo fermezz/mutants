@@ -1,11 +1,13 @@
 import os
 from typing import Any, Dict, Optional
 
+from beeline.middleware.flask import HoneyMiddleware
 from flask import Flask
 
 
 def create_app(test_config: Optional[Dict[str, Any]] = None) -> Flask:
     app = Flask(__name__, instance_relative_config=True)
+    HoneyMiddleware(app, db_events=False)
 
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)

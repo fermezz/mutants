@@ -6,3 +6,5 @@ tags/
 .coverage
 coverage.xml
 infrastructure/.terraform
+infrastructure/terraform.tfstate*
+docker-compose.prod*
