@@ -1,3 +1,7 @@
+[run]
+branch = True
+omit = ./flaskr/config.py
+
 [report]
 fail_under = 80.00
 

@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from itertools import chain
 from typing import List
 
-from flaskr.mutants.utils import Matrix
+from flaskr.mutants.domain.utils import Matrix
 
 
 ADENINE = "A"

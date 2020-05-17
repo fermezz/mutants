@@ -10,4 +10,4 @@ COPY . /app/
 
 WORKDIR /app/
 
-CMD ["gunicorn", "-c", "gunicorn.conf.py", "flaskr:create_app()"]
+CMD ["gunicorn", "-c", "conf/gunicorn.conf.py", "flaskr:create_app()"]

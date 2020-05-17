@@ -1,4 +1,4 @@
-from flaskr.mutants.human import Human
+from flaskr.mutants.domain.human import Human
 
 
 # Vamos a tratar de estructurar todos los tests de la misma manera, siguiendo el

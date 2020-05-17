@@ -1,4 +1,4 @@
-from flaskr.mutants.utils import Matrix
+from flaskr.mutants.domain.utils import Matrix
 
 
 def test_matrix_returns_rows_correctly():
