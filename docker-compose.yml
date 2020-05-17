@@ -5,7 +5,33 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile-dev
+    environment:
+      MONGODB_DATABASE: mutants
+      MONGODB_HOSTNAME: mongodb
+      MONGODB_PASSWORD: mutants
+      MONGODB_USERNAME: mutants
     ports:
       - "5000:5000"
     volumes:
       - ./:/app/
+    depends_on:
+      - mongodb
+
+  mongodb:
+    build:
+      context: ./mongo/
+    environment:
+      MONDODB_LOG_DIR: /dev/null
+      MONGODB_DATA_DIR: /data/db
+      MONGO_INITDB_DATABASE: mutants
+      MONGO_INITDB_NONROOT_PASSWORD: mutants
+      MONGO_INITDB_NONROOT_USERNAME: mutants
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_ROOT_USERNAME: root
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodbdata:/data/db
+
+volumes:
+  mongodbdata:

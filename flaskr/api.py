@@ -1,6 +1,8 @@
-from flask import Blueprint, Response, request
+from flask import Blueprint, Response, jsonify, request
 
-from flaskr.mutants.human import Human
+from flaskr.mutants.domain.human import Human
+from flaskr.mutants.models.human import Mutant, NonMutant
+from mongoengine.connection import get_db
 
 bp = Blueprint("api", __name__, url_prefix="/api")
 
@@ -53,6 +55,27 @@ def mutant() -> Response:
 
     if dna:
         if Human(dna).is_mutant():
+            Mutant(dna=dna).save()
             return Response(None, status=200, mimetype="application/json")
-        return Response(None, status=403, mimetype="application/json")
+        else:
+            NonMutant(dna=dna).save()
+            return Response(None, status=403, mimetype="application/json")
     return Response(None, status=400, mimetype="application/json")
+
+
+# Otra vez pienso que este endpoint estaría mejor nombrado `/humans/stats/`
+@bp.route("/stats/", methods=["GET"])
+def stats() -> Response:
+    db = get_db()
+
+    mutant_count = db.mutant.estimated_document_count()
+    human_count = mutant_count + db.non_mutant.estimated_document_count()
+    mutant_ratio = mutant_count / human_count if human_count else 0.00
+
+    return jsonify(
+        {
+            "count_mutant_dna": mutant_count,
+            "count_human_dna": human_count,
+            "ratio": round(mutant_ratio, 2),
+        }
+    )

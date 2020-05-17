@@ -1,3 +1,11 @@
+.mypy_cache
+__pycache__
+tags
+tags*
+tags/
+.coverage
+coverage.xml
+
 Dockerfile
 infrastructure/
 docker-compose*

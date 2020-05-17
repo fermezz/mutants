@@ -8,13 +8,16 @@ python_version = "3.8"
 
 [packages]
 flask = { version = "~=1.1.2" }
+flask-mongoengine = { version = "~=0.9.5" }
 gunicorn = { version = "~=20.0.4" }
 honeycomb-beeline = { version = "~=2.12.1" }
+mongoengine = { version = "~=0.20.0" }
 
 [dev-packages]
 coverage = "*"
 flake8 = "*"
 ipdb = "*"
+ipython = { version = "==7.0.0" }
 mypy = "*"
 pytest = "*"
 pytest-cov = "*"
