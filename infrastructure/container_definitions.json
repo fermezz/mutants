@@ -17,13 +17,31 @@
   },
   {
     "name": "mutants_api",
-    "image": "642559655451.dkr.ecr.sa-east-1.amazonaws.com/mutants_api:4073ce7",
+    "image": "642559655451.dkr.ecr.sa-east-1.amazonaws.com/mutants_api:b378c0c",
     "memory": 256,
     "essential": true,
     "executionRoleArn": "arn:aws:iam::642559655451:role/ecsTaskExecutionRole",
-    "secrets": [{
-      "name": "HONEYCOMB_API_KEY",
-      "valueFrom": "arn:aws:secretsmanager:sa-east-1:642559655451:secret:mutants_api/honeycomb-Hzdad5"
-    }]
+    "secrets": [
+      {
+        "name": "HONEYCOMB_API_KEY",
+        "valueFrom": "arn:aws:secretsmanager:sa-east-1:642559655451:secret:mutants_api/honeycomb-Hzdad5"
+      },
+      {
+        "name": "MONGODB_USERNAME",
+        "valueFrom": "arn:aws:secretsmanager:sa-east-1:642559655451:secret:mongodb/username-Se86Ur"
+      },
+      {
+        "name": "MONGODB_PASSWORD",
+        "valueFrom": "arn:aws:secretsmanager:sa-east-1:642559655451:secret:mongodb/password-ifibgF"
+      },
+      {
+        "name": "MONGODB_HOSTNAME",
+        "valueFrom": "arn:aws:secretsmanager:sa-east-1:642559655451:secret:mongodb/hostname-b8Vn3B"
+      },
+      {
+        "name": "MONGODB_DATABASE",
+        "valueFrom": "arn:aws:secretsmanager:sa-east-1:642559655451:secret:mongodb/database-QhdhIS"
+      }
+    ]
   }
 ]

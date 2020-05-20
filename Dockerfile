@@ -1,6 +1,8 @@
 FROM python:3.8-slim-buster
 
-RUN pip install -U pipenv
+RUN pip install -U \
+      pipenv \
+      dnspython
 
 COPY Pipfile Pipfile.lock /app/
 ENV PIPENV_PIPFILE /app/Pipfile
