@@ -8,3 +8,5 @@ coverage.xml
 infrastructure/.terraform
 infrastructure/terraform.tfstate*
 docker-compose.prod*
+mongosetup
+mongo/*conf
