@@ -6,7 +6,6 @@
     "essential": true,
     "portMappings": [
       { 
-        "hostPort": 1337,
         "containerPort": 80,
         "protocol": "tcp"
       }
@@ -17,7 +16,7 @@
   },
   {
     "name": "mutants_api",
-    "image": "642559655451.dkr.ecr.sa-east-1.amazonaws.com/mutants_api:b378c0c",
+    "image": "642559655451.dkr.ecr.sa-east-1.amazonaws.com/mutants_api:ceaba91",
     "memory": 256,
     "essential": true,
     "executionRoleArn": "arn:aws:iam::642559655451:role/ecsTaskExecutionRole",
