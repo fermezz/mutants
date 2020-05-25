@@ -67,10 +67,9 @@ def mutant() -> Response:
 # Otra vez pienso que este endpoint estaría mejor nombrado `/humans/stats/`
 @bp.route("/stats/", methods=["GET"])
 def stats() -> Response:
-    db = get_db()
 
-    mutant_count = get_estimated_count(db.mutant)
-    human_count = mutant_count + db.non_mutant.estimated_document_count()
+    mutant_count = get_mutant_estimated_document_count()
+    human_count = mutant_count + get_non_mutant_estimated_document_count()
     mutant_ratio = mutant_count / human_count if human_count else 0.00
 
     return jsonify(
@@ -92,5 +91,12 @@ def healthcheck() -> Response:
 # queries innecesarias durante cargas pesadas, vamos a cachear la respuesta durante 10 segundos.
 # Seguro a Magneto no le va a importar :).
 @timed_cache(seconds=10)
-def get_estimated_count(collection):
-    return collection.estimated_document_count()
+def get_mutant_estimated_document_count():
+    db = get_db()
+    return db.mutant.estimated_document_count()
+
+
+@timed_cache(seconds=10)
+def get_non_mutant_estimated_document_count():
+    db = get_db()
+    return db.non_mutant.estimated_document_count()
