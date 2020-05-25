@@ -1,5 +1,6 @@
 from flask import Blueprint, Response, jsonify, request
 
+from flaskr.api.utils import timed_cache
 from flaskr.mutants.domain.human import Human
 from flaskr.mutants.models.human import Mutant, NonMutant
 from mongoengine.connection import get_db
@@ -68,7 +69,7 @@ def mutant() -> Response:
 def stats() -> Response:
     db = get_db()
 
-    mutant_count = db.mutant.estimated_document_count()
+    mutant_count = get_estimated_count(db.mutant)
     human_count = mutant_count + db.non_mutant.estimated_document_count()
     mutant_ratio = mutant_count / human_count if human_count else 0.00
 
@@ -79,3 +80,12 @@ def stats() -> Response:
             "ratio": round(mutant_ratio, 2),
         }
     )
+
+
+# No creemos que Magneto quiera las estadísticas de mutantes vs. humanos en tiempo real
+# aunque no nos lo ha aclarado! Por ahora, para evitar martillar la base de datos con
+# queries innecesarias durante cargas pesadas, vamos a cachear la respuesta durante 10 segundos.
+# Seguro a Magneto no le va a importar :).
+@timed_cache(seconds=10)
+def get_estimated_count(collection):
+    return collection.estimated_document_count()
