@@ -33,7 +33,3 @@ resource "aws_alb_target_group" "mutants_alb_target_group" {
     path                = "/api/healthcheck/"
   }
 }
-
-output "mutants_alb_dns_name" {
-  value = "${aws_alb.mutants_alb.dns_name}"
-}

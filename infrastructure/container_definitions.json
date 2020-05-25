@@ -2,7 +2,7 @@
   {
     "name": "nginx",
     "image": "642559655451.dkr.ecr.sa-east-1.amazonaws.com/nginx:c1e21b6",
-    "memory": 256,
+    "memory": 192,
     "essential": true,
     "portMappings": [
       { 
@@ -16,8 +16,8 @@
   },
   {
     "name": "mutants_api",
-    "image": "642559655451.dkr.ecr.sa-east-1.amazonaws.com/mutants_api:ceaba91",
-    "memory": 256,
+    "image": "642559655451.dkr.ecr.sa-east-1.amazonaws.com/mutants_api:e2cfae9",
+    "memory": 192,
     "essential": true,
     "executionRoleArn": "arn:aws:iam::642559655451:role/ecsTaskExecutionRole",
     "secrets": [
