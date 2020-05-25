@@ -1,6 +1,9 @@
 resource "aws_alb" "mutants_alb" {
   name            = "mutants-alb"
-  subnets         = [aws_subnet.mutants_vpc_subnet_a.id, aws_subnet.mutants_vpc_subnet_b.id]
+  subnets         = [
+    aws_subnet.mutants_vpc_subnet_a.id,
+    aws_subnet.mutants_vpc_subnet_c.id
+  ]
   security_groups = [aws_security_group.mutants_vpc_security_group.id]
   internal        = false
 }

@@ -10,10 +10,10 @@ resource "aws_subnet" "mutants_vpc_subnet_a" {
   map_public_ip_on_launch = true
 }
 
-resource "aws_subnet" "mutants_vpc_subnet_b" {
+resource "aws_subnet" "mutants_vpc_subnet_c" {
   vpc_id                  = aws_vpc.mutants_vpc.id
   cidr_block              = "10.0.2.0/24"
-  availability_zone       = "sa-east-1b"
+  availability_zone       = "sa-east-1c"
   map_public_ip_on_launch = true
 }
 
@@ -41,7 +41,7 @@ resource "aws_route_table_association" "mutants_vpc_subnet_a_association" {
   route_table_id = aws_route_table.mutants_vpc_route_table.id
 }
 
-resource "aws_route_table_association" "mutants_vpc_subnet_b_association" {
-  subnet_id      = aws_subnet.mutants_vpc_subnet_b.id
+resource "aws_route_table_association" "mutants_vpc_subnet_c_association" {
+  subnet_id      = aws_subnet.mutants_vpc_subnet_c.id
   route_table_id = aws_route_table.mutants_vpc_route_table.id
 }
