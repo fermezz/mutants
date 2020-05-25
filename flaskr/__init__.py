@@ -27,7 +27,7 @@ def create_app(test_config: Optional[Dict[str, Any]] = None) -> Flask:
     except OSError:
         pass
 
-    from flaskr import api
-    app.register_blueprint(api.bp)
+    from flaskr.api import views
+    app.register_blueprint(views.bp)
 
     return app

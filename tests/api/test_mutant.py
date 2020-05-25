@@ -1,12 +1,12 @@
 import json
 from unittest.mock import patch
 
-import flaskr.api
+import flaskr.api.views
 
 
-@patch("flaskr.api.NonMutant")
-@patch("flaskr.api.Mutant")
-@patch("flaskr.api.Human")
+@patch("flaskr.api.views.NonMutant")
+@patch("flaskr.api.views.Mutant")
+@patch("flaskr.api.views.Human")
 def test_human_object_is_initialized_with_the_passed_dna(patched_human, patched_mutant, pathced_non_mutant, client):
     dna = ["ATGCGA", "ATGTGC", "ATATGT", "ATAAGG", "CACCTA", "TCACTG"]
     payload = json.dumps({"dna": dna})
@@ -16,9 +16,9 @@ def test_human_object_is_initialized_with_the_passed_dna(patched_human, patched_
     patched_human.assert_called_once_with(dna)
 
 
-@patch("flaskr.api.NonMutant")
-@patch("flaskr.api.Mutant")
-@patch.object(flaskr.api.Human, "is_mutant", return_value=True)
+@patch("flaskr.api.views.NonMutant")
+@patch("flaskr.api.views.Mutant")
+@patch.object(flaskr.api.views.Human, "is_mutant", return_value=True)
 def test_it_should_return_200_if_human_is_mutant(patched_is_mutant, patched_mutant, patched_non_mutant, client):
     dna = ["ATGCGA", "ATGTGC", "ATATGT", "ATAAGG", "CACCTA", "TCACTG"]
     payload = json.dumps({"dna": dna})
@@ -31,9 +31,9 @@ def test_it_should_return_200_if_human_is_mutant(patched_is_mutant, patched_muta
     assert 200 == response.status_code
 
 
-@patch("flaskr.api.NonMutant")
-@patch("flaskr.api.Mutant")
-@patch.object(flaskr.api.Human, "is_mutant", return_value=False)
+@patch("flaskr.api.views.NonMutant")
+@patch("flaskr.api.views.Mutant")
+@patch.object(flaskr.api.views.Human, "is_mutant", return_value=False)
 def test_it_should_return_403_if_human_is_not_mutant(patched_is_mutant, patched_mutant, patched_non_mutant, client):
     dna = ["GTGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CC2CTA", "TCACTG"]
     payload = json.dumps({"dna": dna})
@@ -46,7 +46,7 @@ def test_it_should_return_403_if_human_is_not_mutant(patched_is_mutant, patched_
     assert 403 == response.status_code
 
 
-@patch("flaskr.api.Human")
+@patch("flaskr.api.views.Human")
 def test_it_should_return_400_if_dna_is_absent(patched_human, client):
     payload = json.dumps({})  # Empty payload
 

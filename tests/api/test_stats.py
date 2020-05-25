@@ -1,8 +1,11 @@
+from datetime import datetime, timedelta
 from unittest.mock import Mock, patch
 
 
-@patch("flaskr.api.get_db")
-def test_stats_are_zero_with_no_data(patched_get_db, client):
+@patch('flaskr.api.utils.datetime')
+@patch("flaskr.api.views.get_db")
+def test_stats_are_zero_with_no_data(patched_get_db, patched_datetime, client):
+    patched_datetime.utcnow.return_value = datetime.utcnow() + timedelta(seconds=11)
     db_mock = Mock(name="db")
     mutant_mock = Mock(name="mutant")
     mutant_mock.estimated_document_count.return_value = 0
@@ -22,8 +25,10 @@ def test_stats_are_zero_with_no_data(patched_get_db, client):
     } == response.json
 
 
-@patch("flaskr.api.get_db")
-def test_stats_are_accurate_with_data(patched_get_db, client):
+@patch('flaskr.api.utils.datetime')
+@patch("flaskr.api.views.get_db")
+def test_stats_are_accurate_with_data(patched_get_db, patched_datetime, client):
+    patched_datetime.utcnow.return_value = datetime.utcnow() + timedelta(seconds=11)
     db_mock = Mock(name="db")
     mutant_mock = Mock(name="mutant")
     mutant_mock.estimated_document_count.return_value = 40
