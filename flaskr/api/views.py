@@ -82,6 +82,11 @@ def stats() -> Response:
     )
 
 
+@bp.route("/healthcheck/", methods=["GET"])
+def healthcheck() -> Response:
+    return Response(None, status=200, mimetype="application/json")
+
+
 # No creemos que Magneto quiera las estadísticas de mutantes vs. humanos en tiempo real
 # aunque no nos lo ha aclarado! Por ahora, para evitar martillar la base de datos con
 # queries innecesarias durante cargas pesadas, vamos a cachear la respuesta durante 10 segundos.

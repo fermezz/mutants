@@ -30,7 +30,7 @@ resource "aws_alb_target_group" "mutants_alb_target_group" {
     unhealthy_threshold = 10
     timeout             = 5
     interval            = 10
-    path                = "/api/stats/"
+    path                = "/api/healthcheck/"
   }
 }
 
