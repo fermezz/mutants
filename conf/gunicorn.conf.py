@@ -6,6 +6,10 @@ import beeline
 
 
 bind = "0.0.0.0:5000"
+
+# Vamos a usar la cantidad de workers recomendada por Gunicorn.
+# Podremos optimizarlo luego si es necesario.
+# https://docs.gunicorn.org/en/stable/design.html#how-many-workers
 workers = multiprocessing.cpu_count() * 2 + 1
 
 

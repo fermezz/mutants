@@ -10,4 +10,4 @@ infrastructure/terraform.tfstate*
 infrastructure/capacity.txt
 docker-compose.prod*
 mongosetup
-mongo/*conf
+services/mongo/*conf

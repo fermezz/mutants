@@ -20,7 +20,7 @@ services:
 
   mongodb:
     build:
-      context: ./mongo/
+      context: ./services/mongo/
     environment:
       MONDODB_LOG_DIR: /dev/null
       MONGODB_DATA_DIR: /data/db
