@@ -2,7 +2,6 @@ from flask import Blueprint, Response, jsonify, request
 
 from flaskr.api.utils import timed_cache
 from flaskr.mutants.domain.human import Human
-from flaskr.mutants.models.human import Mutant, NonMutant
 from mongoengine.connection import get_db
 
 bp = Blueprint("api", __name__, url_prefix="/api")
@@ -55,11 +54,12 @@ def mutant() -> Response:
     dna = request.get_json().get("dna")
 
     if dna:
+        from flaskr.tasks import save_human
         if Human(dna).is_mutant():
-            Mutant(dna=dna).save()
+            save_human.apply_async(args=[dna, True], queue="humans")
             return Response(None, status=200, mimetype="application/json")
         else:
-            NonMutant(dna=dna).save()
+            save_human.apply_async(args=[dna, False], queue="humans")
             return Response(None, status=403, mimetype="application/json")
     return Response(None, status=400, mimetype="application/json")
 
@@ -90,13 +90,13 @@ def healthcheck() -> Response:
 # aunque no nos lo ha aclarado! Por ahora, para evitar martillar la base de datos con
 # queries innecesarias durante cargas pesadas, vamos a cachear la respuesta durante 10 segundos.
 # Seguro a Magneto no le va a importar :).
-@timed_cache(seconds=10)
+@timed_cache(seconds=30)
 def get_mutant_estimated_document_count():
     db = get_db()
     return db.mutant.estimated_document_count()
 
 
-@timed_cache(seconds=10)
+@timed_cache(seconds=30)
 def get_non_mutant_estimated_document_count():
     db = get_db()
     return db.non_mutant.estimated_document_count()

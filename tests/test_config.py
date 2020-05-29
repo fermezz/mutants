@@ -1,11 +1,13 @@
-from flaskr import create_app
-
+import os
 from unittest.mock import Mock, patch
+
+from flaskr import create_app
 
 
 @patch("flaskr.MongoEngine")
 @patch("flaskr.Flask")
 def test_app_is_configured_correctly_for_non_test_environments(patched_app, patched_mongo_engine):
+    os.environ["FLASK_ENV"] = "production"
     mocked_db = Mock(name="db")
     mocked_config = Mock(name="config")
     mocked_app = Mock(name="app")
