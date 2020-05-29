@@ -10,7 +10,7 @@ resource "aws_ecs_service" "mutants_service" {
   cluster         = aws_ecs_cluster.mutants_ecs_cluster.id
   launch_type     = "EC2"
   task_definition = aws_ecs_task_definition.mutants_api.arn
-  desired_count   = 6
+  desired_count   = 3
 
   load_balancer {
     container_name   = "nginx"

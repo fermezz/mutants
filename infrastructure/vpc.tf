@@ -45,3 +45,11 @@ resource "aws_route_table_association" "mutants_vpc_subnet_c_association" {
   subnet_id      = aws_subnet.mutants_vpc_subnet_c.id
   route_table_id = aws_route_table.mutants_vpc_route_table.id
 }
+
+resource "aws_elasticache_subnet_group" "mutants_red_cluster_subnet_group" {
+  name       = "mutants-red-cluster-subnet-group"
+  subnet_ids = [
+    aws_subnet.mutants_vpc_subnet_a.id,
+    aws_subnet.mutants_vpc_subnet_c.id,
+  ]
+}

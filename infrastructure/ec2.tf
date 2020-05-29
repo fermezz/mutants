@@ -8,7 +8,7 @@ resource "aws_launch_configuration" "mutants_ecs_cluster_launch_configuration" {
   name                        = "mutants_ecs_cluster_launch_configuration"
   # https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html
   image_id                    = "ami-0d6ac368fff49ff2d"
-  instance_type               = "t2.micro"
+  instance_type               = "t2.small"
   user_data                   = "${data.template_file.user_data.rendered}"
   iam_instance_profile        = aws_iam_instance_profile.ecs_instance_profile.name
   key_name                    = "mutants-prod"

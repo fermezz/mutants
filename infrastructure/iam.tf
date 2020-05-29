@@ -68,6 +68,7 @@ resource "aws_iam_role_policy" "ecs_task_execution_role_inline_policy" {
         "arn:aws:secretsmanager:sa-east-1:642559655451:secret:mongodb/password-ifibgF",
         "arn:aws:secretsmanager:sa-east-1:642559655451:secret:mongodb/hostname-b8Vn3B",
         "arn:aws:secretsmanager:sa-east-1:642559655451:secret:mongodb/database-QhdhIS",
+        "arn:aws:secretsmanager:sa-east-1:642559655451:secret:redis/hostname-FqF4LJ",
         "arn:aws:kms:sa-east-1:642559655451:key/1cdb5f91-f0e2-4832-bf94-9129f7e8981f"
       ]
     }
