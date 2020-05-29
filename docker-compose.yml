@@ -10,6 +10,7 @@ services:
       MONGODB_HOSTNAME: mongodb
       MONGODB_PASSWORD: mutants
       MONGODB_USERNAME: mutants
+      REDIS_URL: redis
 
     ports:
       - "5000:5000"
@@ -17,6 +18,27 @@ services:
       - ./:/app/
     depends_on:
       - mongodb
+      - redis
+
+  mutants_celery_worker:
+    build:
+      context: ./
+      dockerfile: Dockerfile-dev
+    command: ["celery", "-A", "flaskr.celery.celery", "worker", "-Q", "humans", "--loglevel=DEBUG"]
+    environment:
+      MONGODB_DATABASE: mutants
+      MONGODB_HOSTNAME: mongodb
+      MONGODB_PASSWORD: mutants
+      MONGODB_USERNAME: mutants
+      REDIS_URL: redis
+    volumes:
+      - ./:/app/
+    depends_on:
+      - mongodb
+      - redis
+
+  redis:
+    image: redis:5.0.2
 
   mongodb:
     build:
