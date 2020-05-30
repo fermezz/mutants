@@ -6,7 +6,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_cluster_memory_reservation_upper_thr
   namespace           = "AWS/ECS"
   period              = "120"
   statistic           = "Maximum"
-  threshold           = "80"
+  threshold           = "75"
 
   dimensions = {
     ClusterName          = aws_ecs_cluster.mutants_ecs_cluster.name
@@ -26,7 +26,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_cluster_memory_reservation_lower_met
   namespace           = "AWS/ECS"
   period              = "120"
   statistic           = "Maximum"
-  threshold           = "40"
+  threshold           = "30"
 
   dimensions          = {
     ClusterName       = aws_ecs_cluster.mutants_ecs_cluster.name

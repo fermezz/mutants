@@ -50,8 +50,30 @@ Cada "Target X" es una Tarea de ECS corriendo en una máquina de EC2. El conteni
 ![mutants target](images/mutantstarget.png "Mutants Target")
 
 
+### Redis
+
+Usamos [Redis](https://redis.io/) como backend para [Celery](https://docs.celeryproject.org/en/stable/) para poder hacer throttling en las entradas a la base de datos. Como la base de datos tiene recursos limitados, no aguanta demasiadas entradas en un tiempo corto.
+Redis, junto con Celery, nos permite guardar las peticiones a la base de datos en una fila de tareas que luego "workers" de celery van a consumir.
+
+La instancia de Redis está también en AWS, a través de [ElastiCache](https://aws.amazon.com/elasticache/)
+
+
+### [Consistencia Eventual](https://en.wikipedia.org/wiki/Eventual_consistency)
+
+Las cargas pesadas y constantes contra la base de datos nos hacen responder con mecanismos para no tener que estar consultándola todo el tiempo, como poner cache en el endpoint `/stats/` o implementar una fila de tareas con Celery y Redis para no insertar valores constantemente y saturarla.
+Como la lista de tareas se comporta de manera asíncrona y el cacheo en el endpoint de `/stats/` funciona de manera inequitativa con respecto a cada instancia de la aplicación corriendo, es posible que dos peticiones seguidas a nuestro servidor nos den distintos resultados en las estadísticas.
+Esto es aceptable. Lo que prometemos es que eventualmente, si la aplicación deja de recibir peticiones, todos las instancias de la aplicación devolverán el mismo resultado.
+
+
+### Infraestructura
+
+El proyecto está corriendo principalmente en un cluster de [ECS](https://aws.amazon.com/ecs/) en AWS. Las máquinas del cluster son de [EC2](https://aws.amazon.com/ec2/) y se [autoescalan](https://aws.amazon.com/ec2/autoscaling/#:~:text=Amazon%20EC2%20Auto%20Scaling%20helps,according%20to%20conditions%20you%20define.&text=Dynamic%20scaling%20responds%20to%20changing,instances%20based%20on%20predicted%20demand.) de acuerdo a la cantidad de memoria reservada de los containers que se van a ejecutar.
+
+¿Por qué instancias de EC2 en vez de Fargate? Porque me pareció más divertido.
+
+
 ### Base de Datos
-La base de datos es una instancia de MongoDB corriento en Atlas MongoDB. MongoDB está deployeado con un ReplicaSet de una instancia primaria y dos replicas. Es una [configuración bastante estándar](https://docs.mongodb.com/manual/replication/#replication-in-mongodb). De hecho, es la que viene por default en Atlas.
+La base de datos es una instancia de MongoDB corriento en [Atlas MongoDB](https://cloud.mongodb.com/). MongoDB está deployeado con un ReplicaSet de una instancia primaria y dos replicas. Es una [configuración bastante estándar](https://docs.mongodb.com/manual/replication/#replication-in-mongodb). De hecho, es la que viene por default en Atlas.
 
 Elegimos MongoDB como base de datos por diferentes razones.
 
@@ -265,3 +287,99 @@ def benchmark2():
 benchmark2()
 >> 0:00:00.002165 # Blazing fast, accurate response
 ```
+
+
+## Performance
+
+Fui midiendo la performance a medida que iba escalando la aplicación.
+
+* Recursos de la base de datos:
+
+  * Atlas MongoDB: M0 Sandbox (free tier):
+    - Profiling not allowed
+    - Shared RAM
+    - Shared vCPU
+    - 512MB storage
+
+  * Atlas MongoDB: M10, $0.08/hr
+    - 2GB RAM
+    - 2vCPU
+    - 10GB storage
+
+* Recursos de las instancias de AWS:
+
+  * t2.micro:
+    - 1GB RAM
+    - 1vCPU
+
+  * t2.small:
+    - 2GB RAM
+    - 1vCPU
+
+  * t2.medium:
+    - 4GB RAM
+    - 2vCPU
+
+  * t2.large:
+    - 8GB RAM
+    - 2vCPU
+
+
+### Etapas
+
+Al principio, sin la lista de tareas con Celery y Redis.
+
+* Sandbox de MongoDB (M0):
+  1. Una sóla tarea corriendo en una instancia t2.micro:
+      - Máxima RPS: 18
+      - Latencia: 20.000ms para el percentil 90
+
+  2. Una sóla tarea corriendo en una instancia t2.large:
+      - Máxima RPS: 32
+      - Latencia: 7300ms para el percentil 90
+
+  NOTE: AWS nos muestra que la utilización de la CPU y la Memoria es bastante baja, entonces no necesitamos una instancia con tantos recursos
+
+
+  3. Tres tareas corriendo en una instancia t2.medium:
+      - Máxima RPS: 74
+      - Latencia: 6700ms para el percentil 90
+
+  NOTE: Añadir más instancias en esta estapa no ayudaba, porque el cuello de botella empezó a ser la base de datos.
+
+
+  Cacheamos las llamadas a `/stats/`
+
+  4. Cuatro tareas corriendo en una instancia t2.medium:
+      - Máxima RPS: 130
+      - Latencia: 250ms para el percentil 90
+
+  NOTE: Cachear ayudó, pero necesitamos más recursos en la base de datos
+
+
+* MongoDB (M10):
+  5. Ocho tareas corriendo en dos instancia t2.medium:
+      - Máxima RPS: 250
+      - Latencia: 500ms para el percentil 90
+
+  6. Ocho tareas corriendo en dos instancia t2.medium:
+      - Máxima RPS: 250
+      - Latencia: 500ms para el percentil 90
+
+  7. Doce tareas corriendo en tres instancia t2.medium:
+      - Máxima RPS: 370
+      - Latencia: 500ms para el percentil 90
+
+
+  Añadimos la fila de tareas con Celery y Redis y volvemos a la instancia M0 de MongoDB -¡porque es gratis!-.
+
+* Sandbox de MongoDB (M0):
+
+  8. Nueve tareas corriendo en tres instancias t2.medium:
+      - Máxima RPS: 450
+      - Latencia: 400ms para el percentil 90
+
+  NOTE: Mejoró significativamente con respecto a la etapa (4), en la que sólo pudimos hacer 130 RPS
+
+
+  Los próximos pasos serían escalar la base de datos tanto horizontal –a través del sharding– como verticalmente –agregándole recursos a las máquinas en donde corre.
