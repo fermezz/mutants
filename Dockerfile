@@ -12,4 +12,6 @@ COPY . /app/
 
 WORKDIR /app/
 
+ENV FLASK_ENV production
+
 CMD ["gunicorn", "-c", "conf/gunicorn.conf.py", "flaskr:create_app()"]
