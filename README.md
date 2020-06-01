@@ -11,6 +11,41 @@ Una vez instalados Docker y Docker Compose, podemos correr `docker-compose up --
 Este comando usa el archivo de configuración [`docker-compose.yml`](https://github.com/fermezz/mutants/blob/master/docker-compose.yml) para orquestrar los containers necesarios para correr el proyecto en tu ambiente local.
 
 
+## Cómo usarlo
+
+La URL del balanceador de carga es `http://mutants-alb-477972529.sa-east-1.elb.amazonaws.com/`.
+
+Podemos hacer una petición `HTTP GET` al endpoint `/api/stats/` para obtener las estadísticas o una petición `HTTP POST` al endpoint `/api/mutant/` para preguntar si un ADN específico es mutante o no.
+
+Ejemplos de requests:
+
+Humano:
+
+```
+curl --request POST \
+  --url http://mutants-alb-477972529.sa-east-1.elb.amazonaws.com/api/mutant/ \
+  --header 'content-type: application/json' \
+  --data '{"dna":["AAGTGC", "AAGTGC", "ATATGT", "AAAGG", "CACCTA", "TCACTG"]}'
+```
+
+Mutante:
+
+```
+curl --request POST \
+  --url http://mutants-alb-477972529.sa-east-1.elb.amazonaws.com/api/mutant/ \
+  --header 'content-type: application/json' \
+  --data '{"dna":["AAGTGC", "AAAAAA", "ATATGT", "TTAGG", "CACCTA", "TCACTG"]}'
+```
+
+
+Estadísticas:
+
+```
+curl --request GET \
+  --url http://mutants-alb-174702419.sa-east-1.elb.amazonaws.com/api/stats/
+```
+
+
 ## Anatomía
 
 El proyecto tiene varios directorios dividiendo los componentes necesarios para ser ejecutado:
@@ -338,14 +373,14 @@ Al principio, sin la lista de tareas con Celery y Redis.
       - Máxima RPS: 32
       - Latencia: 7300ms para el percentil 90
 
-  NOTE: AWS nos muestra que la utilización de la CPU y la Memoria es bastante baja, entonces no necesitamos una instancia con tantos recursos
+      NOTE: AWS nos muestra que la utilización de la CPU y la Memoria es bastante baja, entonces no necesitamos una instancia con tantos recursos
 
 
   3. Tres tareas corriendo en una instancia t2.medium:
       - Máxima RPS: 74
       - Latencia: 6700ms para el percentil 90
 
-  NOTE: Añadir más instancias en esta estapa no ayudaba, porque el cuello de botella empezó a ser la base de datos.
+      NOTE: Añadir más instancias en esta estapa no ayudaba, porque el cuello de botella empezó a ser la base de datos.
 
 
   Cacheamos las llamadas a `/stats/`
@@ -354,7 +389,7 @@ Al principio, sin la lista de tareas con Celery y Redis.
       - Máxima RPS: 130
       - Latencia: 250ms para el percentil 90
 
-  NOTE: Cachear ayudó, pero necesitamos más recursos en la base de datos
+      NOTE: Cachear ayudó, pero necesitamos más recursos en la base de datos
 
 
 * MongoDB (M10):
@@ -379,7 +414,7 @@ Al principio, sin la lista de tareas con Celery y Redis.
       - Máxima RPS: 450
       - Latencia: 400ms para el percentil 90
 
-  NOTE: Mejoró significativamente con respecto a la etapa (4), en la que sólo pudimos hacer 130 RPS
+      NOTE: Mejoró significativamente con respecto a la etapa (4), en la que sólo pudimos hacer 130 RPS
 
 
   Los próximos pasos serían escalar la base de datos tanto horizontal –a través del sharding– como verticalmente –agregándole recursos a las máquinas en donde corre.

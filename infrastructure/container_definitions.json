@@ -16,7 +16,7 @@
   },
   {
     "name": "mutants_api",
-    "image": "642559655451.dkr.ecr.sa-east-1.amazonaws.com/mutants_api:4fed388",
+    "image": "642559655451.dkr.ecr.sa-east-1.amazonaws.com/mutants_api:beb0ee9",
     "memory": 192,
     "essential": true,
     "executionRoleArn": "arn:aws:iam::642559655451:role/ecsTaskExecutionRole",
@@ -49,7 +49,7 @@
   },
   {
     "name": "mutants_celery_worker",
-    "image": "642559655451.dkr.ecr.sa-east-1.amazonaws.com/mutants_api:4fed388",
+    "image": "642559655451.dkr.ecr.sa-east-1.amazonaws.com/mutants_api:beb0ee9",
     "command": ["celery", "-A", "flaskr.celery.celery", "worker", "-Q", "humans"],
     "memory": 192,
     "essential": true,
