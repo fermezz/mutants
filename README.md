@@ -42,7 +42,7 @@ Estadísticas:
 
 ```
 curl --request GET \
-  --url http://mutants-alb-174702419.sa-east-1.elb.amazonaws.com/api/stats/
+  --url http://mutants-alb-477972529.sa-east-1.elb.amazonaws.com/api/stats/
 ```
 
 
