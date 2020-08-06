@@ -2,6 +2,10 @@
 
 # Mutants
 
+## ¿Qué es?
+
+Ejercicio de programación que hice durante las entrevistas con @mercadolibre
+
 ## Cómo correr localmente
 
 Para desarrollar localmente, sólo basta con tener instalado Docker y Docker Compose. Si no lo tenés, por favor [instalá Docker](https://docs.docker.com/engine/install/) y [Docker Compose](https://docs.docker.com/compose/install/) primero.
